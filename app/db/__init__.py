@@ -23,13 +23,13 @@ class DBSession(object):
 
     def init_session(self):
         self.session_map = {
-            key: scoped_session(sessionmaker(bind=engines[key]))
+            key: scoped_session(sessionmaker(bind=engines[key], expire_on_commit=False))
             for key in DB_SETTINGS.keys()}
 
-    def using_bind(self, name='default', expire_on_commit=False):
+    def using_bind(self, name='default'):
 
         if name not in self.session_map:
             raise ValueError("{0} is not in register db engines".format(name))
-        return self.session_map[name](expire_on_commit=expire_on_commit)
+        return self.session_map[name]()
 
 db_session = DBSession()
