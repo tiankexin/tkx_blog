@@ -32,6 +32,11 @@ class BaseModel(object):
             setattr(self, k, v)
 
     @classmethod
+    @cls_transaction(readonly=False)
+    def update_filter(cls, session, *query_conditions, **update_content):
+        return session.query(cls).filter(*query_conditions).update(update_content, synchronize_session='fetch')
+
+    @classmethod
     @cls_transaction(readonly=True)
     def query_all(cls, session, *query_conditions, **other_limits):
         return_fields = other_limits.pop('_fields') if '_fields' in other_limits else None

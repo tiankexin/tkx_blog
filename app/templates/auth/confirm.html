@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p>Dear <b>{{ user.username }}</b>,</p>
+<p>
+      Welcome to TKX_BLOG!
+      <br>
+      To confirm your account please click on the following link:<a href="{{ url_for('auth.confirm', token=token, _external=True) }}">click here</a>.
+      <br>
+      Sincerely,
+      <br>
+      The Developer TKX
+      <br>
+      Note: replies to this email address are not monitored.
+</p>
+</body>
+</html>
