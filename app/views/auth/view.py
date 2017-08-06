@@ -11,7 +11,10 @@ auth = Blueprint('auth', __name__)
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
+    print "aaaaa", form.email.data, form.validate_on_submit(), request.method
+    print "bbbbb", form.errors
     if form.validate_on_submit():
+        print '111111111'
         user = User.query_one(User.email == form.email.data)
         if user is not None and user.verify_password(form.password.data):
             login_user(user, form.remember_me.data)

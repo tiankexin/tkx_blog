@@ -8,44 +8,64 @@
 <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
 {% endblock %}
 
-{% block navbar %}
-<div class="navbar navbar-inverse" role="navigation">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="{{ url_for('main.index') }}">Flasky</a>
-        </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li><a href="{{ url_for('main.index') }}">Home</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                {% if current_user.is_authenticated %}
-                <li><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
-                {% else %}
-                <li><a href="{{ url_for('auth.login') }}">Log In</a></li>
-                {% endif %}
-            </ul>
-        </div>
+{% macro render_field(field) %}
+  {% if field.errors %}
+    <div class="has-error">
+      <dd>{{ field(**kwargs)|safe }}
+        <ul class="list-unstyled">
+        {% for error in field.errors %}
+          <li><span id="helpBlock2" class="help-block">{{ error }}</span></li>
+        {% endfor %}
+        </ul>
+      </dd>
     </div>
-</div>
+  {% else %}
+      <dd>{{ field(**kwargs)|safe }}</dd>
+  {% endif %}
+{% endmacro %}
+
+{% block navbar %}
+<nav class="navbar navbar-inverse navbar-fixed-top" style="padding: 8px;">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="{{ url_for('main.index') }}" style="padding: 0px">
+            <img src="{{ url_for('static', filename='blog_logo.png') }}" height="100%" width="250px"></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="{{ url_for('main.index') }}">主页</a></li>
+            </ul>
+        <ul class="nav navbar-nav navbar-right">
+          {% if current_user.is_authenticated %}
+            <li><a href="{{ url_for('auth.logout') }}">
+              <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> 登出</a></li>
+          {% else %}
+            <li><a href="{{ url_for('auth.login') }}">
+              <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span> 登录</a></li>
+          {% endif %}
+          <li>
+            <a href="{{ url_for('auth.register') }}">
+                <span class="glyphicon glyphicon-hand-right" aria-hidden="true"></span> 注册
+            </a>
+          </li>
+        </ul>
+        </div><!--/.navbar-collapse -->
+      </div>
+</nav>
 {% endblock %}
 
 {% block content %}
-<div class="container">
-    {% for message in get_flashed_messages() %}
-    <div class="alert alert-warning">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-        {{ message }}
-    </div>
-    {% endfor %}
-
-    {% block page_content %}{% endblock %}
+<!-- Main jumbotron for a primary marketing message or call to action -->
+<div class="jumbotron">
+  <div class="container">
+      {% block page_content %}{% endblock %}
+  </div>
 </div>
 {% endblock %}
 
@@ -53,3 +73,31 @@
 {{ super() }}
 {{ moment.include_moment() }}
 {% endblock %}
+
+// <form class="navbar-form">
+//              <div class="form-group">
+                <input type="text" placeholder="Email" class="form-control">
+              </div>
+              <div class="form-group">
+                <input type="password" placeholder="Password" class="form-control">
+              </div>
+              <button type="submit" class="btn btn-success">Sign in</button>
+            </form>
+
+
+            <li role="presentation" class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                Dropdown <span class="caret"></span>
+              </a>
+              <ul class="dropdown-menu">
+                <form class="navbar-form">
+                  <div class="form-group">
+                    <input type="text" placeholder="Email" class="form-control">
+                  </div>
+                  <div class="form-group">
+                    <input type="password" placeholder="Password" class="form-control">
+                  </div>
+                  <button type="submit" class="btn btn-success">Sign in</button>
+                </form>
+              </ul>
+            </li>
