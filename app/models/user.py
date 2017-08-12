@@ -5,11 +5,13 @@ import logging
 from app.db import Base
 from sqlalchemy import Column, Integer, BigInteger, String, DECIMAL, SmallInteger, Date, DateTime, TEXT, Boolean
 from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import UserMixin
+from flask_login import UserMixin, AnonymousUserMixin
 from app import login_manager
 from app.db.model import BaseModel
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+from app.common.constant import Permission
 from flask import current_app
+from app.models.role import Role
 
 
 logger = logging.getLogger(__name__)
@@ -21,7 +23,7 @@ class User(Base, BaseModel, UserMixin):
     """
     __tablename__ = 'users'
 
-    id = Column(Integer, primary_key=True)
+    id = Column(BigInteger, primary_key=True)
     username = Column(String(64))
     email = Column(String(128))
     role_id = Column(Integer)
@@ -29,6 +31,12 @@ class User(Base, BaseModel, UserMixin):
     confirmed = Column(Boolean, default=False)
     created_at = Column(DateTime, default=datetime.datetime.now)
     updated_at = Column(DateTime, default=datetime.datetime.now)
+
+    def __init__(self, **kwargs):
+        super(User, self).__init__(**kwargs)
+        if self.role_id is None:
+            default_role = Role.query_one(Role.default == True)
+            self.role_id = default_role.id
 
     @property
     def password(self):
@@ -49,8 +57,30 @@ class User(Base, BaseModel, UserMixin):
         s = Serializer(current_app.config['SECRET_KEY'], expiration)
         return s.dumps({'confirm': self.id})
 
+    def can(self, permissions):
+        role = Role.query_one(Role.id == self.role_id)
+        return role is not None and (role.permissions & permissions) == permissions
+
+    def is_administrator(self):
+        return self.can(Permission.ADMINISTER)
+
+    def update_last_seen(self):
+        UserProfile.update_filter(UserProfile.user_id == self.id, **{'last_seen': datetime.datetime.now()})
+
     def __repr__(self):
         return '<User %r>' % self.username
+
+
+class AnonymousUser(AnonymousUserMixin):
+
+    def can(self, permissions):
+        return False
+
+    def is_administrator(self):
+        return False
+
+
+login_manager.anonymous_user = AnonymousUser
 
 
 def confirm_user(user, token):
@@ -69,3 +99,18 @@ def confirm_user(user, token):
 @login_manager.user_loader
 def load_user(user_id):
     return User.query_one(User.id == int(user_id))
+
+
+class UserProfile(Base, BaseModel):
+
+    __tablename__ = 'user_profile'
+
+    id = Column(BigInteger, primary_key=True)
+    user_id = Column(BigInteger)
+    name = Column(String(64), default="")
+    location = Column(String(64), default="来自火星")
+    about_me = Column(TEXT, default="该用户很懒, 什么都没留下")
+    last_seen = Column(DateTime, default=datetime.datetime.now)
+    created_at = Column(DateTime, default=datetime.datetime.now)
+    updated_at = Column(DateTime, default=datetime.datetime.now)
+

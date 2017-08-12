@@ -2,8 +2,9 @@ from flask import Blueprint
 from flask import render_template, redirect, request, url_for, flash
 from flask_login import login_user, logout_user, login_required, current_user
 from .form import LoginForm, RegistrationForm
-from app.models.user import User, confirm_user
+from app.models.user import User, confirm_user, UserProfile
 from app.utils.mail import general_send_email
+from app.db.wrapper import gen_db_session
 
 auth = Blueprint('auth', __name__)
 
@@ -36,11 +37,16 @@ def logout():
 def register():
     form = RegistrationForm()
     if form.validate_on_submit():
-        user = User(
-            email=form.email.data,
-            username=form.username.data,
-            password=form.password.data
-        ).add()
+        with gen_db_session(db='blog', auto_commit=True) as s:
+            user = User(
+                email=form.email.data,
+                username=form.username.data,
+                password=form.password.data
+            )
+            s.add(user)
+            s.flush()
+            profile = UserProfile(user_id=user.id)
+            s.add(profile)
         token = user.generate_confirmation_token()
         general_send_email(user.email, 'Confirm Your Account',
                            'auth/confirm', user=user, token=token)
@@ -63,12 +69,13 @@ def confirm(token):
 
 @auth.before_app_request
 def before_request():
-    if current_user.is_authenticated \
-            and not current_user.confirmed \
-            and request.endpoint \
-            and request.endpoint[:5] != 'auth.' \
-            and request.endpoint != 'static':
-        return redirect(url_for('auth.unconfirmed'))
+    if current_user.is_authenticated:
+        current_user.update_last_seen()
+        if not current_user.confirmed \
+                and request.endpoint \
+                and request.endpoint[:5] != 'auth.' \
+                and request.endpoint != 'static':
+            return redirect(url_for('auth.unconfirmed'))
 
 
 @auth.route('/unconfirmed')
