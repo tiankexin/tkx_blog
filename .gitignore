@@ -43,4 +43,4 @@ venv
 
 .idea
 
-app/setting.py
+setting.py
