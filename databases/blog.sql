@@ -5,6 +5,7 @@ CREATE TABLE `users` (
     `role_id` int(11) NOT NULL DEFAULT 0 COMMENT '角色ID',
     `password_hash` varchar(128) NOT NULL DEFAULT '' COMMENT '秘钥串',
     `confirmed` tinyint(1) NOT NULL DEFAULT 0 COMMENT '确认状态',
+    `avatar_hash` varchar(32) NOT NULL DEFAULT '' COMMENT '头像hash值',
     `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`),

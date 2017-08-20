@@ -2,6 +2,7 @@
 from __future__ import absolute_import, unicode_literals
 import datetime
 import logging
+import hashlib
 from app.db import Base
 from sqlalchemy import Column, Integer, BigInteger, String, DECIMAL, SmallInteger, Date, DateTime, TEXT, Boolean
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -10,7 +11,7 @@ from app import login_manager
 from app.db.model import BaseModel
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from app.common.constant import Permission
-from flask import current_app
+from flask import current_app, request
 from app.models.role import Role
 
 
@@ -29,6 +30,7 @@ class User(Base, BaseModel, UserMixin):
     role_id = Column(Integer)
     password_hash = Column(String(128))
     confirmed = Column(Boolean, default=False)
+    avatar_hash = Column(String(32))
     created_at = Column(DateTime, default=datetime.datetime.now)
     updated_at = Column(DateTime, default=datetime.datetime.now)
 
@@ -37,6 +39,9 @@ class User(Base, BaseModel, UserMixin):
         if self.role_id is None:
             default_role = Role.query_one(Role.default == True)
             self.role_id = default_role.id
+        if self.email is not None and self.avatar_hash is None:
+            self.avatar_hash = hashlib.md5(
+                self.email.encode('utf-8')).hexdigest()
 
     @property
     def password(self):
@@ -66,6 +71,16 @@ class User(Base, BaseModel, UserMixin):
 
     def update_last_seen(self):
         UserProfile.update_filter(UserProfile.user_id == self.id, **{'last_seen': datetime.datetime.now()})
+
+    def gravatar(self, size=100, default='identicon', rating='g'):
+        if request.is_secure:
+            url = 'https://secure.gravatar.com/avatar'
+        else:
+            url = 'http://www.gravatar.com/avatar'
+        hash = self.avatar_hash or hashlib.md5(
+            self.email.encode('utf-8')).hexdigest()
+        return '{url}/{hash}?s={size}&d={default}&r={rating}'.format(
+            url=url, hash=hash, size=size, default=default, rating=rating)
 
     def __repr__(self):
         return '<User %r>' % self.username

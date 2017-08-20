@@ -4,9 +4,7 @@
 
 {% block head %}
 {{ super() }}
-<link href={{ url_for('static', filename="common.css") }} rel="stylesheet">
-<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon"
-      xmlns="http://www.w3.org/1999/html">
+<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
 <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
 {% endblock %}
 
@@ -27,7 +25,7 @@
 {% endmacro %}
 
 {% block navbar %}
-    <nav class="navbar navbar-inverse navbar-fixed-top" style="padding: 8px;">
+<nav class="navbar navbar-inverse navbar-fixed-top" style="padding: 8px;">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -46,10 +44,9 @@
         <ul class="nav navbar-nav navbar-right">
           {% if current_user.is_authenticated %}
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img class="img-circle" src="{{ current_user.gravatar(size=18) }}">  {{ current_user.username }}<b class="caret"></b></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ current_user.username }} <span class="caret"></span></a>
             <ul class="dropdown-menu dropdown-menu-left">
               <li><a href="{{ url_for('main.show_user_info', user_id=current_user.id) }}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> 个人资料</a></li>
-              <li><a href="#"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> 我的主页</a></li>
               <li><a href="#">Change Email</a></li>
               <li role="separator" class="divider"></li>
               <li><a href="{{ url_for('auth.logout') }}"><span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> 登出</a></li>
@@ -67,10 +64,11 @@
         </ul>
         </div><!--/.navbar-collapse -->
       </div>
-    </nav>
+</nav>
 {% endblock %}
 
 {% block content %}
+<!-- Main jumbotron for a primary marketing message or call to action -->
 <div class="jumbotron">
   <div class="container">
       {% block page_content %}{% endblock %}

@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block head %}
+{{ super() }}
+{% endblock %}
+{% block title %}tkx's blog - {{ user.username }}{% endblock %}
+
+{% block page_content %}
+<div class="page-header">
+    <img class="img-circle profile-thumbnail" src="{{ user.gravatar(size=256) }}">
+    <div class="profile-header">
+    <div><h2>{{ user.username }}</h2></div>
+    <dl class="lead">
+        <dt>真实姓名:</dt>
+        <dd>{% if profile.name %}{{ profile.name }}{% else %} 无{% endif %}</dd>
+        <dt>邮箱地址:</dt>
+        <dd>{{ user.email }}</dd>
+        <dt>地点:</dt>
+        <dd>来自 <a href="http://maps.google.com/?q={{ profile.location }}">{{ profile.location }}</a></dd>
+        <dt>自我介绍:</dt>
+        <dd>{{ profile.about_me }}</dd>
+    </dl>
+    </div>
+</div>
+{% endblock %}
+
+<p>Member since {{ moment(profile.created_at).format('L') }}. Last seen {{ moment(profile.last_seen).fromNow() }}.</p>
