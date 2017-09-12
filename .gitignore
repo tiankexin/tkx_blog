@@ -44,3 +44,4 @@ venv
 .idea
 
 app/settings.py
+.DS_Store
