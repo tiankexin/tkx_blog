@@ -1,0 +1,123 @@
+blockquote,body,button,dd,dl,dt,fieldset,form,h1,h2,h3,h4,h5,h6,hr,input,legend,li,ol,p,pre,td,textarea,th,ul {margin:0;padding:0}
+body,button,input,select,textarea {
+height:100%}
+h1,h2,h3,h4,h5,h6 {font-size:100%}
+address,cite,dfn,em,var {font-style:normal}
+code,kbd,pre,samp {font-family:courier new,courier,monospace}
+small {font-size:12px}
+ol,ul {list-style:none}
+a {text-decoration:none}
+a:hover {text-decoration:underline}
+sup {vertical-align:text-top}
+sub {vertical-align:text-bottom}
+legend {color:#000}
+fieldset,img {border:0}
+button,input,select,textarea {font-size:100%}
+table {border-collapse:collapse;border-spacing:0}
+
+.app{
+    height: 600px;
+    min-width: 1200px;
+    overflow: scroll;
+}
+
+.head{
+    height: 30px;
+    background-color: black;
+}
+.cus_content{
+    height: 440px;
+    width:100%;
+
+}
+.cus_contin{
+    height: 550px;
+    min-width: 800px;
+    padding: 50px 0;
+    margin: 70px 100px 0 20px;
+    background-color:#F7F7F7;
+}
+.cus_contentleft{
+    float: left;
+    width: 223px;
+    height:90%;
+    margin-left: 78px;
+    padding: 18px 0 140px 0;
+    background-color: #F7F7F7;
+    border-bottom: 1px solid #CCCCCC;
+}
+.cus_logo{
+    object-fit: cover;
+    width: 220px;
+    height: 219px;
+    display: block;
+    border-right: 1px solid #CCCCCC;
+}
+.cus_usrname{
+    margin : 30px 0;
+    font-size: 2em;
+}
+.cus_btn{
+    width: 220px;
+    height: 34px;
+    line-height: 34px;
+    text-align: center;
+    background-color:#1e8cbe;
+    border-radius: 3px;
+
+}
+.cus_btn a{
+    font-size: 14px;
+    display: block;
+    color: white;
+    width:100%;
+    height:100%;
+}
+.cus_contentright{
+    float: left;
+    min-height:80%;
+    width: 40%;
+    padding-bottom: 6%;
+    margin-left: 70px;
+}
+.cus_tag{
+}
+.cus_items{
+    font-size: 1.1em;
+    width:80%;
+    height: 10%;
+    margin-top: 3%;
+    font-family: Microsoft YaHei;
+}
+.cus_itemname{
+    font-weight:bold;
+    height: 100%;
+    line-height: 100%;
+    margin:5px 0;
+}
+ .cus_detail{
+     background-color: white;
+     width: 100%;
+     margin: 4px 0;
+     padding: 2px 5px;
+     outline: none;
+     height: 42px;
+     line-height: 42px;
+     border: 1px solid #e1e4e8;
+     border-radius: 3px;
+     box-shadow: inset 0 1px 2px rgba(27,31,35,0.075);
+}
+.cus_introname{
+    min-height: 120px;
+    max-height: 100px;
+    line-height: 24px;
+    width:150%;
+    overflow: scroll;
+}
+.bot{
+    border-top:1px solid #B8B891;
+    text-align: center;
+    height: 30px;
+    font-size: 1em;
+}
+.cus_clean{clear:both; height: 0; line-height: 0; font-size: 0;background-color:#F7F7F7;}

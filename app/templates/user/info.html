@@ -2,10 +2,63 @@
 {% import "bootstrap/wtf.html" as wtf %}
 {% block head %}
 {{ super() }}
+<link href="{{ url_for('static', filename='css/userprofile.css') }}" rel="stylesheet">
 {% endblock %}
 {% block title %}tkx's blog - {{ user.username }}{% endblock %}
 
 {% block page_content %}
+<div class="cus_content">
+    <div class="cus_contin">
+    <div class="cus_contentleft">
+        <img class="cus_logo" src="{{ user.gravatar(size=256) }}">
+        <div class="cus_usrname"><h2>{{ user.username }}</h2></div>
+        <div class="cus_btn">
+            <a href="javascript:;" @click="addUser" >修改资料</a>
+        </div>
+    </div>
+    <div class="cus_contentright">
+        <div class="cus_tag">
+        <div class="cus_items">
+            <div class="cus_itemname">
+                姓名:
+            </div>
+            <div class="cus_detail">
+                {{ profile.name }}
+            </div>
+        </div>
+        <div class="cus_items">
+            <div class="cus_itemname">
+                邮箱地址:
+            </div>
+            <div class="cus_detail">
+                {{ user.email }}
+            </div>
+        </div>
+        <div class="cus_items">
+            <div class="cus_itemname">
+                家庭住址:
+            </div>
+            <div class="cus_detail">
+                <a href="http://maps.google.com/?q={{ profile.location }}">{{ profile.location }}</a>
+            </div>
+        </div>
+        <div class="cus_items">
+            <div class="cus_itemname">
+                自我介绍:
+            </div>
+            <div class=" cus_detail cus_introname">
+                {{ profile.about_me }}
+            </div>
+        </div>
+        </div>
+    </div>
+        <p class="cus_clean"></p>
+    </div>
+</div>
+
+{% endblock %}
+
+<p>Member since {{ moment(profile.created_at).format('L') }}. Last seen {{ moment(profile.last_seen).fromNow() }}.</p>
 <div class="page-header">
     <img class="img-circle profile-thumbnail" src="{{ user.gravatar(size=256) }}">
     <div class="profile-header">
@@ -22,6 +75,3 @@
     </dl>
     </div>
 </div>
-{% endblock %}
-
-<p>Member since {{ moment(profile.created_at).format('L') }}. Last seen {{ moment(profile.last_seen).fromNow() }}.</p>

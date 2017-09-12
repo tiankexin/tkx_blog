@@ -1,13 +1,15 @@
 {% extends "bootstrap/base.html" %}
 
-{% block title %}Flasky{% endblock %}
+{% block title %}Tiankexin{% endblock %}
 
 {% block head %}
 {{ super() }}
-<link href={{ url_for('static', filename="common.css") }} rel="stylesheet">
-<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon"
-      xmlns="http://www.w3.org/1999/html">
-<link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+<link href={{ url_for('static', filename="css/common.css") }} rel="stylesheet">
+<style>
+body{
+    padding-top: 65px;
+}
+</style>
 {% endblock %}
 
 {% macro render_field(field) %}
@@ -46,7 +48,7 @@
         <ul class="nav navbar-nav navbar-right">
           {% if current_user.is_authenticated %}
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img class="img-circle" src="{{ current_user.gravatar(size=18) }}">  {{ current_user.username }}<b class="caret"></b></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img class="img-circle" src="{{ current_user.gravatar(size=20) }}">  {{ current_user.username }}<b class="caret"></b></a>
             <ul class="dropdown-menu dropdown-menu-left">
               <li><a href="{{ url_for('main.show_user_info', user_id=current_user.id) }}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> 个人资料</a></li>
               <li><a href="#"><span class="glyphicon glyphicon-home" aria-hidden="true"></span> 我的主页</a></li>

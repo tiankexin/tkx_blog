@@ -9,7 +9,16 @@
 {% block content %}
 <div class="container">
 <div class="row">
-    <div class="col-md-4">col-md-4</div>
+    <div class="col-md-4">
+        <form method="post">
+            <label for="username">用户名:</label>
+            <input type="text" name="username" id="username" value=""><br>
+            <label for="pass">密码:</label>
+            <input type="password" name="pass" id="pass" value=""><br>
+            <textarea cols="50" rows="10" name="contact_me">在这里输入内容</textarea>
+            <input type="submit" value="确定" name="submit">
+        </form>
+    </div>
     <div class="col-md-4">col-md-4</div>
 </div>
 </div>

@@ -1,4 +1,4 @@
-from flask import render_template
+from flask import render_template, request
 from . import main
 from app.utils.permission import permission_required, admin_required
 from app.common.constant import Permission
@@ -18,9 +18,23 @@ def for_everyone():
     return "Welcome Everyone!"
 
 
-@main.route('/test1')
+@main.route('/test1', methods=["POST"])
 def test1():
-    return render_template('test/test1.html')
+    return "Hell0 1"
+
+
+@main.route('/test1', methods=["GET"])
+def test2():
+    return "Hi Hi"
+    # return render_template('test/test1.html')
+
+
+@main.route('/test3', methods=["POST", "GET"])
+def test3():
+    if request.method == "POST":
+        print "hhhhhhhhhh",request.form
+    print request.args
+    return render_template("test/test1.html")
 
 
 @main.route('/')

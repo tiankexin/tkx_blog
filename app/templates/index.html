@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 
-{% block title %}Flasky{% endblock %}
+{% block title %}Tiankexin{% endblock %}
 {% block head %}
 {{ super() }}
-<link href={{ url_for('static', filename="carousel.css") }} rel="stylesheet">
+<link href={{ url_for('static', filename="css/carousel.css") }} rel="stylesheet">
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 {% endblock %}
@@ -58,7 +58,7 @@
         <span class="sr-only">Next</span>
       </a>
     </div><!-- /.carousel -->
-    <div class="jumbotron">
+    <div class="jumbotron" style="margin-bottom: 0px">
     <div class="container">
     <div class="page-header">
     <h1>Hello, {% if current_user.is_authenticated %}{{ current_user.username }}{% else %}Stranger{% endif %}!</h1>
@@ -67,6 +67,10 @@
     </div>
     </div>
     </div>
+    <footer style="background-color: #222222;padding: 0px;margin-bottom: 0px;height: 70px">
+    <p class="pull-right"><a href="#top">回到顶部</a></p>
+    <p>@ 2017 kexin.tian</p>
+    </footer>
 {% endblock %}
 
 {% block scripts %}
